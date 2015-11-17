@@ -15,16 +15,16 @@
  */
 package net.chameleooo.photobooth.ptp.commands;
 
-import java.nio.ByteBuffer;
-
 import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.PacketUtil;
 import net.chameleooo.photobooth.ptp.PtpAction;
 import net.chameleooo.photobooth.ptp.PtpCamera;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpConstants.Type;
+
+import java.nio.ByteBuffer;
 
 /**
  * Base class for all PTP commands.

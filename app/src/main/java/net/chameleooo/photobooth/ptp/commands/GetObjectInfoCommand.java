@@ -15,16 +15,16 @@
  */
 package net.chameleooo.photobooth.ptp.commands;
 
-import java.nio.ByteBuffer;
+import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpCamera.IO;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.model.ObjectInfo;
 
-import android.util.Log;
+import java.nio.ByteBuffer;
 
 public class GetObjectInfoCommand extends Command {
 

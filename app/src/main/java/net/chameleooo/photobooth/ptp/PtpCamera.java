@@ -15,27 +15,12 @@
  */
 package net.chameleooo.photobooth.ptp;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import android.graphics.Bitmap;
 import android.hardware.usb.UsbRequest;
 import android.os.Handler;
 import android.util.Log;
 
-import org.acra.ErrorReporter;
-
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.commands.CloseSessionCommand;
 import net.chameleooo.photobooth.ptp.commands.Command;
 import net.chameleooo.photobooth.ptp.commands.GetDeviceInfoCommand;
@@ -51,6 +36,19 @@ import net.chameleooo.photobooth.ptp.commands.SetDevicePropValueCommand;
 import net.chameleooo.photobooth.ptp.model.DeviceInfo;
 import net.chameleooo.photobooth.ptp.model.DevicePropDesc;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public abstract class PtpCamera implements Camera {
 
@@ -189,13 +187,13 @@ public abstract class PtpCamera implements Camera {
         if (AppConfig.LOG) {
             Log.i(TAG, deviceInfo.toString());
         }
-        if (AppConfig.USE_ACRA) {
-            try {
-                ErrorReporter.getInstance().putCustomData("deviceInfo", deviceInfo.toString());
-            } catch (Throwable e) {
-                // no fail
-            }
-        }
+//        if (AppConfig.USE_ACRA) {
+//            try {
+//                ErrorReporter.getInstance().putCustomData("deviceInfo", deviceInfo.toString());
+//            } catch (Throwable e) {
+//                // no fail
+//            }
+//        }
         this.deviceInfo = deviceInfo;
 
         Set<Integer> operations = new HashSet<Integer>();

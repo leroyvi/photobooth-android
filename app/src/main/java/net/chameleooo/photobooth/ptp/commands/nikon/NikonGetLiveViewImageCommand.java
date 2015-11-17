@@ -15,16 +15,11 @@
  */
 package net.chameleooo.photobooth.ptp.commands.nikon;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import org.acra.ErrorReporter;
-
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.NikonCamera;
 import net.chameleooo.photobooth.ptp.PacketUtil;
 import net.chameleooo.photobooth.ptp.PtpCamera.IO;
@@ -32,6 +27,9 @@ import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Product;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class NikonGetLiveViewImageCommand extends NikonCommand {
 
@@ -112,15 +110,15 @@ public class NikonGetLiveViewImageCommand extends NikonCommand {
             pictureOffset = 384;
             break;
         default:
-            if (AppConfig.USE_ACRA && !haveAddedDumpToAcra) {
-                try {
-                    haveAddedDumpToAcra = true;
-                    String hex = PacketUtil.hexDumpToString(b.array(), start, length < 728 ? length : 728);
-                    ErrorReporter.getInstance().putCustomData("liveview hexdump", hex);
-                } catch (Throwable e) {
-                    // no fail
-                }
-            }
+//            if (AppConfig.USE_ACRA && !haveAddedDumpToAcra) {
+//                try {
+//                    haveAddedDumpToAcra = true;
+//                    String hex = PacketUtil.hexDumpToString(b.array(), start, length < 728 ? length : 728);
+//                    ErrorReporter.getInstance().putCustomData("liveview hexdump", hex);
+//                } catch (Throwable e) {
+//                    // no fail
+//                }
+//            }
             return;
         }
 

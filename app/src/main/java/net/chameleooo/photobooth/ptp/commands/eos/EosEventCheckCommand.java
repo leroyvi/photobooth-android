@@ -15,11 +15,9 @@
  */
 package net.chameleooo.photobooth.ptp.commands.eos;
 
-import java.nio.ByteBuffer;
-
 import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.EosCamera;
 import net.chameleooo.photobooth.ptp.PacketUtil;
 import net.chameleooo.photobooth.ptp.PtpCamera.IO;
@@ -28,6 +26,8 @@ import net.chameleooo.photobooth.ptp.PtpConstants.Event;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Property;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+
+import java.nio.ByteBuffer;
 
 public class EosEventCheckCommand extends EosCommand {
 

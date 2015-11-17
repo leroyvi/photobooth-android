@@ -15,19 +15,19 @@
  */
 package net.chameleooo.photobooth.ptp.commands.eos;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.EosCamera;
 import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class EosGetLiveViewPictureCommand extends EosCommand {
 

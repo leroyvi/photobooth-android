@@ -15,8 +15,6 @@
  */
 package net.chameleooo.photobooth.ptp;
 
-import java.util.Map;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,9 +28,11 @@ import android.hardware.usb.UsbManager;
 import android.os.Handler;
 import android.util.Log;
 
-import com.remoteyourcam.usb.AppConfig;
+import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.Camera.CameraListener;
 import net.chameleooo.photobooth.ptp.PtpCamera.State;
+
+import java.util.Map;
 
 public class PtpUsbService implements PtpService {
 

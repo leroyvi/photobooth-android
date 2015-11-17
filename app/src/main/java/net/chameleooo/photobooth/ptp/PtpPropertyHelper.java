@@ -15,12 +15,12 @@
  */
 package net.chameleooo.photobooth.ptp;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.remoteyourcam.usb.R;
+import net.chameleooo.photobooth.R;
 import net.chameleooo.photobooth.ptp.PtpConstants.Product;
 import net.chameleooo.photobooth.ptp.PtpConstants.Property;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Helper to convert property values to their string representations.
