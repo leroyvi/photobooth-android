@@ -45,7 +45,7 @@
       android:configChanges="orientation"
       android:label="@string/launcher_label"
       android:launchMode="singleTask"
-      android:screenOrientation="sensorLandscape">
+      android:screenOrientation="landscape">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -62,7 +62,7 @@
     <activity
       android:name="net.chameleooo.photobooth.activities.AppSettingsActivity"
       android:label="@string/activity_app_settings_title"
-      android:screenOrientation="sensorLandscape"/>
+      android:screenOrientation="landscape"/>
   </application>
 
 </manifest>
