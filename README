@@ -1,0 +1,16 @@
+An android photobooth
+
+Tested with :
+
+- Odroid C1 board (running android 4.4.2 + odroid wifi dongle)
+- Nikon DSLR D5100
+- ChalkElectronics 14" touch screen (https://www.chalk-elec.com/?page_id=1280#!/14-HDMI-interface-LCD-with-capacitive-touchscreen/p/36248806/category=3094861)
+- Canon Selphy CP910 (using wifi)
+
+
+Features :
+
+- Mode 1 photo
+- Mode 4 photos in a row (merged in one single file)
+- A gallery
+- Printing (from gallery or just after the shot)
