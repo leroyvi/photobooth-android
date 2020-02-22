@@ -4,11 +4,8 @@
     tools:context=".FullscreenActivity">
 
 
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
     <FrameLayout android:id="@+id/fullscreen_content" android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true" android:onClick="startLive">
 
         <ViewFlipper
             android:layout_width="match_parent"

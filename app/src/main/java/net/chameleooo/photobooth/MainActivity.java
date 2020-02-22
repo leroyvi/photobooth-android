@@ -16,6 +16,7 @@
 package net.chameleooo.photobooth;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -139,6 +140,8 @@ public class MainActivity extends Activity implements CameraListener {
         }
         camera.setCapturedPictureSampleSize(2);
         sessionFrag.cameraStarted(camera);
+        camera.setLiveView(true);
+        sessionFrag.liveViewStarted();
     }
 
     @Override

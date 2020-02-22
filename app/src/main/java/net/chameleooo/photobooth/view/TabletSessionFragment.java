@@ -132,7 +132,7 @@ public class TabletSessionFragment extends SessionFragment {
 
     @Override
     public void enableUi(boolean enabled) {
-        takePictureBtn.setEnabled(enabled);
+//        takePictureBtn.setEnabled(enabled);
     }
 
     @Override
@@ -143,10 +143,6 @@ public class TabletSessionFragment extends SessionFragment {
         propertyChanged(Camera.Property.FocusMode, camera.getProperty(Camera.Property.FocusMode));
         propertyChanged(Camera.Property.AvailableShots, camera.getProperty(Camera.Property.AvailableShots));
         propertyChanged(Camera.Property.CurrentFocusPoint, camera.getProperty(Camera.Property.CurrentFocusPoint));
-
-        if (camera.isLiveViewSupported()) {
-            liveViewToggle.setEnabled(camera.isLiveViewSupported());
-        }
 
         if (camera.isLiveViewOpen()) {
             liveViewStarted();
@@ -195,7 +191,7 @@ public class TabletSessionFragment extends SessionFragment {
 
     @Override
     public void liveViewStarted() {
-        if (!inStart || camera() == null) {
+        if (camera() == null) {
             return;
         }
         liveViewToggle.setChecked(true);
