@@ -18,9 +18,7 @@ package net.chameleooo.photobooth.ptp.commands;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
-import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class InitiateCaptureCommand extends Command {
 
@@ -29,9 +27,9 @@ public class InitiateCaptureCommand extends Command {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
-        if (responseCode == Response.DeviceBusy) {
+        if (responseCode == PtpConstants.Response.DeviceBusy) {
             camera.onDeviceBusy(this, true); // TODO when nikon live view is enabled this stalls
             return;
         }
@@ -39,6 +37,6 @@ public class InitiateCaptureCommand extends Command {
 
     @Override
     public void encodeCommand(ByteBuffer b) {
-        encodeCommand(b, Operation.InitiateCapture, 0, 0);
+        encodeCommand(b, PtpConstants.Operation.InitiateCapture, 0, 0);
     }
 }

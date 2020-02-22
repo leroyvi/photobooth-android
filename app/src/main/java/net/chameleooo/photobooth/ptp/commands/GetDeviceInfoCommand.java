@@ -19,7 +19,6 @@ import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.PtpCamera;
 import net.chameleooo.photobooth.ptp.PtpConstants;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.model.DeviceInfo;
@@ -33,7 +32,7 @@ public class GetDeviceInfoCommand extends Command {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
         if (responseCode != Response.Ok) {
             camera.onPtpError(String.format("Couldn't read device information, error code \"%s\"",

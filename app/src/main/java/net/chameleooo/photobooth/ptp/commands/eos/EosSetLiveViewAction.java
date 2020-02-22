@@ -18,10 +18,8 @@ package net.chameleooo.photobooth.ptp.commands.eos;
 import net.chameleooo.photobooth.ptp.EosCamera;
 import net.chameleooo.photobooth.ptp.EosConstants;
 import net.chameleooo.photobooth.ptp.PtpAction;
-import net.chameleooo.photobooth.ptp.EosConstants.EvfMode;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
-import net.chameleooo.photobooth.ptp.PtpConstants.Property;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpCamera;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class EosSetLiveViewAction implements PtpAction {
 
@@ -34,24 +32,24 @@ public class EosSetLiveViewAction implements PtpAction {
     }
 
     @Override
-    public void exec(IO io) {
-        int evfMode = camera.getPtpProperty(Property.EosEvfMode);
+    public void exec(PtpCamera.IO io) {
+        int evfMode = camera.getPtpProperty(PtpConstants.Property.EosEvfMode);
 
-        if (enabled && evfMode != EvfMode.ENABLE || !enabled && evfMode != EvfMode.DISABLE) {
-            EosSetPropertyCommand setEvfMode = new EosSetPropertyCommand(camera, Property.EosEvfMode,
-                    enabled ? EvfMode.ENABLE : EvfMode.DISABLE);
+        if (enabled && evfMode != EosConstants.EvfMode.ENABLE || !enabled && evfMode != EosConstants.EvfMode.DISABLE) {
+            EosSetPropertyCommand setEvfMode = new EosSetPropertyCommand(camera, PtpConstants.Property.EosEvfMode,
+                    enabled ? EosConstants.EvfMode.ENABLE : EosConstants.EvfMode.DISABLE);
             io.handleCommand(setEvfMode);
 
-            if (setEvfMode.getResponseCode() == Response.DeviceBusy) {
+            if (setEvfMode.getResponseCode() == PtpConstants.Response.DeviceBusy) {
                 camera.onDeviceBusy(this, true);
                 return;
-            } else if (setEvfMode.getResponseCode() != Response.Ok) {
+            } else if (setEvfMode.getResponseCode() != PtpConstants.Response.Ok) {
                 camera.onPtpWarning("Couldn't open live view");
                 return;
             }
         }
 
-        int outputDevice = camera.getPtpProperty(Property.EosEvfOutputDevice);
+        int outputDevice = camera.getPtpProperty(PtpConstants.Property.EosEvfOutputDevice);
 
         if (enabled) {
             outputDevice |= EosConstants.EvfOutputDevice.PC;
@@ -59,13 +57,13 @@ public class EosSetLiveViewAction implements PtpAction {
             outputDevice &= ~EosConstants.EvfOutputDevice.PC;
         }
 
-        EosSetPropertyCommand setOutputDevice = new EosSetPropertyCommand(camera, Property.EosEvfOutputDevice,
+        EosSetPropertyCommand setOutputDevice = new EosSetPropertyCommand(camera, PtpConstants.Property.EosEvfOutputDevice,
                 outputDevice);
         io.handleCommand(setOutputDevice);
 
-        if (setOutputDevice.getResponseCode() == Response.DeviceBusy) {
+        if (setOutputDevice.getResponseCode() == PtpConstants.Response.DeviceBusy) {
             camera.onDeviceBusy(this, true);
-        } else if (setOutputDevice.getResponseCode() == Response.Ok) {
+        } else if (setOutputDevice.getResponseCode() == PtpConstants.Response.Ok) {
             if (!enabled) {
                 camera.onLiveViewStopped();
             } else {

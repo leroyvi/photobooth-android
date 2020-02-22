@@ -19,9 +19,7 @@ import android.graphics.Bitmap;
 
 import net.chameleooo.photobooth.ptp.PtpAction;
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.model.ObjectInfo;
 
 public class RetrievePictureAction implements PtpAction {
@@ -37,11 +35,11 @@ public class RetrievePictureAction implements PtpAction {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         GetObjectInfoCommand getInfo = new GetObjectInfoCommand(camera, objectHandle);
         io.handleCommand(getInfo);
 
-        if (getInfo.getResponseCode() != Response.Ok) {
+        if (getInfo.getResponseCode() != PtpConstants.Response.Ok) {
             return;
         }
 
@@ -55,7 +53,7 @@ public class RetrievePictureAction implements PtpAction {
                 || objectInfo.thumbFormat == PtpConstants.ObjectFormat.EXIF_JPEG) {
             GetThumb getThumb = new GetThumb(camera, objectHandle);
             io.handleCommand(getThumb);
-            if (getThumb.getResponseCode() == Response.Ok) {
+            if (getThumb.getResponseCode() == PtpConstants.Response.Ok) {
                 thumbnail = getThumb.getBitmap();
             }
         }
@@ -63,7 +61,7 @@ public class RetrievePictureAction implements PtpAction {
         GetObjectCommand getObject = new GetObjectCommand(camera, objectHandle, sampleSize);
         io.handleCommand(getObject);
 
-        if (getObject.getResponseCode() != Response.Ok) {
+        if (getObject.getResponseCode() != PtpConstants.Response.Ok) {
             return;
         }
         if (getObject.getBitmap() == null) {

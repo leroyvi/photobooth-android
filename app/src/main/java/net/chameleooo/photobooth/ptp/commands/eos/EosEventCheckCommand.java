@@ -15,6 +15,8 @@
  */
 package net.chameleooo.photobooth.ptp.commands.eos;
 
+import java.nio.ByteBuffer;
+
 import android.util.Log;
 
 import net.chameleooo.photobooth.AppConfig;
@@ -26,8 +28,6 @@ import net.chameleooo.photobooth.ptp.PtpConstants.Event;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Property;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
-
-import java.nio.ByteBuffer;
 
 public class EosEventCheckCommand extends EosCommand {
 

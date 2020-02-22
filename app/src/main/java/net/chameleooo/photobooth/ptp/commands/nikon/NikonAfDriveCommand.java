@@ -18,9 +18,9 @@ package net.chameleooo.photobooth.ptp.commands.nikon;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.NikonCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpCamera;
 
 public class NikonAfDriveCommand extends NikonCommand {
 
@@ -29,7 +29,7 @@ public class NikonAfDriveCommand extends NikonCommand {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         //        if (camera.isInActivationTypePhase()) {
         //            return;
         //        }

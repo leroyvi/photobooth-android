@@ -18,7 +18,6 @@ package net.chameleooo.photobooth.ptp.commands;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.model.StorageInfo;
 
@@ -37,7 +36,7 @@ public class GetStorageInfoCommand extends Command {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
     }
 

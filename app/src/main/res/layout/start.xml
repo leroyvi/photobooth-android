@@ -1,0 +1,73 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/startLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    tools:context=".FullscreenActivity">
+
+
+    <FrameLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ViewFlipper
+            android:id="@+id/textSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:autoStart="true"
+            android:flipInterval="3000"
+            android:inAnimation="@android:anim/slide_in_left"
+            android:outAnimation="@android:anim/slide_out_right">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:keepScreenOn="true"
+                android:text="Appuyer pour commencer"
+                android:textSize="150sp"
+                android:textStyle="bold"
+                android:textColor="#2F4F4F" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:keepScreenOn="true"
+                android:text="On commence ?"
+                android:textColor="#2F4F4F"
+                android:textSize="150sp"
+                android:textStyle="bold" />
+
+        </ViewFlipper>
+    </FrameLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_one_pict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/one_pict"
+        android:tint="@android:color/white"
+        fab:fab_colorNormal="@android:color/holo_red_light"
+        fab:fab_colorPressed="@android:color/holo_red_light" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_four_pict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/four_pict"
+        android:tint="@android:color/white"
+        android:visibility="gone"
+        fab:fab_colorNormal="@android:color/holo_red_light"
+        fab:fab_colorPressed="@android:color/holo_red_light" />
+
+</FrameLayout>

@@ -17,12 +17,10 @@ package net.chameleooo.photobooth.ptp.commands.nikon;
 
 import net.chameleooo.photobooth.ptp.NikonCamera;
 import net.chameleooo.photobooth.ptp.PtpAction;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
-import net.chameleooo.photobooth.ptp.PtpConstants.Datatype;
-import net.chameleooo.photobooth.ptp.PtpConstants.Property;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 import net.chameleooo.photobooth.ptp.commands.CloseSessionCommand;
 import net.chameleooo.photobooth.ptp.commands.SetDevicePropValueCommand;
+import net.chameleooo.photobooth.ptp.PtpCamera;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class NikonCloseSessionAction implements PtpAction {
 
@@ -33,13 +31,13 @@ public class NikonCloseSessionAction implements PtpAction {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         SetDevicePropValueCommand setRecordingMedia = new SetDevicePropValueCommand(camera,
-                Property.NikonRecordingMedia, 0,
-                Datatype.uint8);
+                PtpConstants.Property.NikonRecordingMedia, 0,
+                PtpConstants.Datatype.uint8);
         io.handleCommand(setRecordingMedia);
 
-        if (setRecordingMedia.getResponseCode() == Response.DeviceBusy) {
+        if (setRecordingMedia.getResponseCode() == PtpConstants.Response.DeviceBusy) {
             camera.onDeviceBusy(this, true);
             return;
         }

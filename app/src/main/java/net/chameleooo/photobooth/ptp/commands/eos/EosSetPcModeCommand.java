@@ -19,9 +19,7 @@ import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.EosCamera;
 import net.chameleooo.photobooth.ptp.PtpConstants;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
-import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpCamera;
 
 public class EosSetPcModeCommand extends EosCommand {
 
@@ -30,9 +28,9 @@ public class EosSetPcModeCommand extends EosCommand {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
-        if (responseCode != Response.Ok) {
+        if (responseCode != PtpConstants.Response.Ok) {
             camera.onPtpError(String.format("Couldn't initialize session! setting PC Mode failed, error code %s",
                     PtpConstants.responseToString(responseCode)));
         }
@@ -40,6 +38,6 @@ public class EosSetPcModeCommand extends EosCommand {
 
     @Override
     public void encodeCommand(ByteBuffer b) {
-        encodeCommand(b, Operation.EosSetPCConnectMode, 1);
+        encodeCommand(b, PtpConstants.Operation.EosSetPCConnectMode, 1);
     }
 }

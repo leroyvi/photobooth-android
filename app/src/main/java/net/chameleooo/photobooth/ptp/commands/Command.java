@@ -15,6 +15,8 @@
  */
 package net.chameleooo.photobooth.ptp.commands;
 
+import java.nio.ByteBuffer;
+
 import android.util.Log;
 
 import net.chameleooo.photobooth.AppConfig;
@@ -23,8 +25,6 @@ import net.chameleooo.photobooth.ptp.PtpAction;
 import net.chameleooo.photobooth.ptp.PtpCamera;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpConstants.Type;
-
-import java.nio.ByteBuffer;
 
 /**
  * Base class for all PTP commands.
@@ -43,7 +43,7 @@ public abstract class Command implements PtpAction {
 
     /**
      * Received response code, should be handled in
-     * {@link #exec( net.chameleooo.photobooth.ptp.PtpCamera.IO)}.
+     * {@link #exec(PtpCamera.IO)}.
      */
     protected int responseCode;
 

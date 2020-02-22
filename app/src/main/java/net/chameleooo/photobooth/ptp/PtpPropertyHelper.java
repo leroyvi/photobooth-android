@@ -15,12 +15,12 @@
  */
 package net.chameleooo.photobooth.ptp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.chameleooo.photobooth.R;
 import net.chameleooo.photobooth.ptp.PtpConstants.Product;
 import net.chameleooo.photobooth.ptp.PtpConstants.Property;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Helper to convert property values to their string representations.
@@ -304,44 +304,44 @@ public class PtpPropertyHelper {
         return null;
     }
 
-    public static Integer mapToDrawable(int property, int value) {
-        switch (property) {
-        case Property.EosWhitebalance: {
-            Integer resId = eosWhitebalanceIconsMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown;
-        }
-        case Property.EosShootingMode: {
-            Integer resId = eosShootingModeIconsMap.get(value);
-            return resId != null ? resId : R.drawable.shootingmode_unknown;
-        }
-        case Property.EosMeteringMode: {
-            Integer resId = eosMeteringModeIconsMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown; //TODO own unknown image
-        }
-        case Property.EosDriveMode: {
-            Integer resId = eosDriveModeIconsMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown; //TODO own unknown image
-        }
-        case Property.WhiteBalance: {
-            Integer resId = nikonWhitebalanceIconsMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown;
-        }
-        case Property.ExposureProgramMode: {
-            Integer resId = nikonExposureProgramMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown;
-        }
-        case Property.ExposureMeteringMode: {
-            Integer resId = nikonMeteringModeMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown;
-        }
-        case Property.FocusMeteringMode: {
-            Integer resId = nikonFocusMeteringModeIconsMap.get(value);
-            return resId != null ? resId : R.drawable.whitebalance_unknown;
-        }
-        default:
-            return null;
-        }
-    }
+//    public static Integer mapToDrawable(int property, int value) {
+//        switch (property) {
+//        case Property.EosWhitebalance: {
+//            Integer resId = eosWhitebalanceIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown;
+//        }
+//        case Property.EosShootingMode: {
+//            Integer resId = eosShootingModeIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.shootingmode_unknown;
+//        }
+//        case Property.EosMeteringMode: {
+//            Integer resId = eosMeteringModeIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown; //TODO own unknown image
+//        }
+//        case Property.EosDriveMode: {
+//            Integer resId = eosDriveModeIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown; //TODO own unknown image
+//        }
+//        case Property.WhiteBalance: {
+//            Integer resId = nikonWhitebalanceIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown;
+//        }
+//        case Property.ExposureProgramMode: {
+//            Integer resId = nikonExposureProgramMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown;
+//        }
+//        case Property.ExposureMeteringMode: {
+//            Integer resId = nikonMeteringModeMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown;
+//        }
+//        case Property.FocusMeteringMode: {
+//            Integer resId = nikonFocusMeteringModeIconsMap.get(value);
+//            return resId != null ? resId : R.drawable.whitebalance_unknown;
+//        }
+//        default:
+//            return null;
+//        }
+//    }
 
     public static String getBiggestValue(int property) {
         switch (property) {
@@ -545,24 +545,24 @@ public class PtpPropertyHelper {
         eosWhitebalanceMap.put(20, "PC-4");
         eosWhitebalanceMap.put(21, "PC-5");
 
-        eosWhitebalanceIconsMap.put(0, R.drawable.whitebalance_auto);
-        eosWhitebalanceIconsMap.put(1, R.drawable.whitebalance_daylight);
-        eosWhitebalanceIconsMap.put(2, R.drawable.whitebalance_cloudy);
-        eosWhitebalanceIconsMap.put(3, R.drawable.whitebalance_tungsten);
-        eosWhitebalanceIconsMap.put(4, R.drawable.whitebalance_fluorescent);
-        eosWhitebalanceIconsMap.put(5, R.drawable.whitebalance_flash);
-        eosWhitebalanceIconsMap.put(6, R.drawable.whitebalance_manual1);
-        eosWhitebalanceIconsMap.put(8, R.drawable.whitebalance_shade);
-        eosWhitebalanceIconsMap.put(9, R.drawable.whitebalance_color_temperature);
-        eosWhitebalanceIconsMap.put(10, R.drawable.whitebalance_custom1);
-        eosWhitebalanceIconsMap.put(11, R.drawable.whitebalance_custom2);
-        eosWhitebalanceIconsMap.put(12, R.drawable.whitebalance_custom3);
-        eosWhitebalanceIconsMap.put(15, R.drawable.whitebalance_manual2);
-        eosWhitebalanceIconsMap.put(16, R.drawable.whitebalance_manual3);
-        eosWhitebalanceIconsMap.put(18, R.drawable.whitebalance_manual4);
-        eosWhitebalanceIconsMap.put(19, R.drawable.whitebalance_manual5);
-        eosWhitebalanceIconsMap.put(20, R.drawable.whitebalance_custom4);
-        eosWhitebalanceIconsMap.put(21, R.drawable.whitebalance_custom5);
+//        eosWhitebalanceIconsMap.put(0, R.drawable.whitebalance_auto);
+//        eosWhitebalanceIconsMap.put(1, R.drawable.whitebalance_daylight);
+//        eosWhitebalanceIconsMap.put(2, R.drawable.whitebalance_cloudy);
+//        eosWhitebalanceIconsMap.put(3, R.drawable.whitebalance_tungsten);
+//        eosWhitebalanceIconsMap.put(4, R.drawable.whitebalance_fluorescent);
+//        eosWhitebalanceIconsMap.put(5, R.drawable.whitebalance_flash);
+//        eosWhitebalanceIconsMap.put(6, R.drawable.whitebalance_manual1);
+//        eosWhitebalanceIconsMap.put(8, R.drawable.whitebalance_shade);
+//        eosWhitebalanceIconsMap.put(9, R.drawable.whitebalance_color_temperature);
+//        eosWhitebalanceIconsMap.put(10, R.drawable.whitebalance_custom1);
+//        eosWhitebalanceIconsMap.put(11, R.drawable.whitebalance_custom2);
+//        eosWhitebalanceIconsMap.put(12, R.drawable.whitebalance_custom3);
+//        eosWhitebalanceIconsMap.put(15, R.drawable.whitebalance_manual2);
+//        eosWhitebalanceIconsMap.put(16, R.drawable.whitebalance_manual3);
+//        eosWhitebalanceIconsMap.put(18, R.drawable.whitebalance_manual4);
+//        eosWhitebalanceIconsMap.put(19, R.drawable.whitebalance_manual5);
+//        eosWhitebalanceIconsMap.put(20, R.drawable.whitebalance_custom4);
+//        eosWhitebalanceIconsMap.put(21, R.drawable.whitebalance_custom5);
 
         eosShootingModeMap.put(0, "Program AE");
         eosShootingModeMap.put(1, "Shutter-Speed Priority AE");
@@ -581,22 +581,22 @@ public class PtpPropertyHelper {
         eosShootingModeMap.put(15, "Flash Off");
         eosShootingModeMap.put(19, "Creative Auto");
 
-        eosShootingModeIconsMap.put(0, R.drawable.shootingmode_program);
-        eosShootingModeIconsMap.put(1, R.drawable.shootingmode_tv);
-        eosShootingModeIconsMap.put(2, R.drawable.shootingmode_av);
-        eosShootingModeIconsMap.put(3, R.drawable.shootingmode_m);
-        eosShootingModeIconsMap.put(4, R.drawable.shootingmode_bulb);
-        eosShootingModeIconsMap.put(5, R.drawable.shootingmode_adep);
-        eosShootingModeIconsMap.put(6, R.drawable.shootingmode_dep);
-        eosShootingModeIconsMap.put(8, R.drawable.shootingmode_lock);
-        eosShootingModeIconsMap.put(9, R.drawable.shootingmode_auto);
-        eosShootingModeIconsMap.put(10, R.drawable.shootingmode_night_scene_portrait);
-        eosShootingModeIconsMap.put(11, R.drawable.shootingmode_sports);
-        eosShootingModeIconsMap.put(12, R.drawable.shootingmode_portrait);
-        eosShootingModeIconsMap.put(13, R.drawable.shootingmode_landscape);
-        eosShootingModeIconsMap.put(14, R.drawable.shootingmode_close_up);
-        eosShootingModeIconsMap.put(15, R.drawable.shootingmode_flash_off);
-        eosShootingModeIconsMap.put(19, R.drawable.shootingmode_creativeauto);
+//        eosShootingModeIconsMap.put(0, R.drawable.shootingmode_program);
+//        eosShootingModeIconsMap.put(1, R.drawable.shootingmode_tv);
+//        eosShootingModeIconsMap.put(2, R.drawable.shootingmode_av);
+//        eosShootingModeIconsMap.put(3, R.drawable.shootingmode_m);
+//        eosShootingModeIconsMap.put(4, R.drawable.shootingmode_bulb);
+//        eosShootingModeIconsMap.put(5, R.drawable.shootingmode_adep);
+//        eosShootingModeIconsMap.put(6, R.drawable.shootingmode_dep);
+//        eosShootingModeIconsMap.put(8, R.drawable.shootingmode_lock);
+//        eosShootingModeIconsMap.put(9, R.drawable.shootingmode_auto);
+//        eosShootingModeIconsMap.put(10, R.drawable.shootingmode_night_scene_portrait);
+//        eosShootingModeIconsMap.put(11, R.drawable.shootingmode_sports);
+//        eosShootingModeIconsMap.put(12, R.drawable.shootingmode_portrait);
+//        eosShootingModeIconsMap.put(13, R.drawable.shootingmode_landscape);
+//        eosShootingModeIconsMap.put(14, R.drawable.shootingmode_close_up);
+//        eosShootingModeIconsMap.put(15, R.drawable.shootingmode_flash_off);
+//        eosShootingModeIconsMap.put(19, R.drawable.shootingmode_creativeauto);
 
         eosDriveModeMap.put(0, "Single Shooting");
         eosDriveModeMap.put(1, "Continuous Shooting");
@@ -625,16 +625,16 @@ public class PtpPropertyHelper {
         nikonWhitebalanceMap.put(0x8011, "Sunny shade");
         nikonWhitebalanceMap.put(0x8012, "Color temperature");
         nikonWhitebalanceMap.put(0x8013, "Preset");
-
-        nikonWhitebalanceIconsMap.put(2, R.drawable.whitebalance_auto);
-        nikonWhitebalanceIconsMap.put(4, R.drawable.whitebalance_daylight);
-        nikonWhitebalanceIconsMap.put(5, R.drawable.whitebalance_fluorescent);
-        nikonWhitebalanceIconsMap.put(6, R.drawable.whitebalance_tungsten);
-        nikonWhitebalanceIconsMap.put(7, R.drawable.whitebalance_flash);
-        nikonWhitebalanceIconsMap.put(0x8010, R.drawable.whitebalance_cloudy);
-        nikonWhitebalanceIconsMap.put(0x8011, R.drawable.whitebalance_shade);
-        nikonWhitebalanceIconsMap.put(0x8012, R.drawable.whitebalance_color_temperature);
-        nikonWhitebalanceIconsMap.put(0x8013, R.drawable.whitebalance_custom1); // TODO create Nikon specific icon
+//
+//        nikonWhitebalanceIconsMap.put(2, R.drawable.whitebalance_auto);
+//        nikonWhitebalanceIconsMap.put(4, R.drawable.whitebalance_daylight);
+//        nikonWhitebalanceIconsMap.put(5, R.drawable.whitebalance_fluorescent);
+//        nikonWhitebalanceIconsMap.put(6, R.drawable.whitebalance_tungsten);
+//        nikonWhitebalanceIconsMap.put(7, R.drawable.whitebalance_flash);
+//        nikonWhitebalanceIconsMap.put(0x8010, R.drawable.whitebalance_cloudy);
+//        nikonWhitebalanceIconsMap.put(0x8011, R.drawable.whitebalance_shade);
+//        nikonWhitebalanceIconsMap.put(0x8012, R.drawable.whitebalance_color_temperature);
+//        nikonWhitebalanceIconsMap.put(0x8013, R.drawable.whitebalance_custom1); // TODO create Nikon specific icon
 
         nikonExposureIndexMap.put(0x0064, "100");
         nikonExposureIndexMap.put(0x007D, "125");
@@ -665,21 +665,21 @@ public class PtpPropertyHelper {
         nikonExposureIndexMap.put(0x2710, "10000");
         nikonExposureIndexMap.put(0x3200, "12800");
 
-        nikonExposureProgramMap.put(0x0001, R.drawable.shootingmode_m);
-        nikonExposureProgramMap.put(0x0002, R.drawable.shootingmode_program);
-        nikonExposureProgramMap.put(0x0003, R.drawable.shootingmode_av);
-        nikonExposureProgramMap.put(0x0004, R.drawable.shootingmode_tv);
-        nikonExposureProgramMap.put(0x8010, R.drawable.shootingmode_auto);
-        nikonExposureProgramMap.put(0x8011, R.drawable.shootingmode_portrait);
-        nikonExposureProgramMap.put(0x8012, R.drawable.shootingmode_landscape);
-        nikonExposureProgramMap.put(0x8013, R.drawable.shootingmode_close_up);
-        nikonExposureProgramMap.put(0x8014, R.drawable.shootingmode_sports);
-        nikonExposureProgramMap.put(0x8015, R.drawable.shootingmode_night_scene_portrait);
-        nikonExposureProgramMap.put(0x8016, R.drawable.shootingmode_flash_off);
-        nikonExposureProgramMap.put(0x8017, R.drawable.shootingmode_unknown); // TODO Child
-        nikonExposureProgramMap.put(0x8018, R.drawable.shootingmode_unknown); // TODO SCENE
-        nikonExposureProgramMap.put(0x8050, R.drawable.shootingmode_unknown); // TODO User mode U1
-        nikonExposureProgramMap.put(0x8051, R.drawable.shootingmode_unknown); // TODO User mode U2
+//        nikonExposureProgramMap.put(0x0001, R.drawable.shootingmode_m);
+//        nikonExposureProgramMap.put(0x0002, R.drawable.shootingmode_program);
+//        nikonExposureProgramMap.put(0x0003, R.drawable.shootingmode_av);
+//        nikonExposureProgramMap.put(0x0004, R.drawable.shootingmode_tv);
+//        nikonExposureProgramMap.put(0x8010, R.drawable.shootingmode_auto);
+//        nikonExposureProgramMap.put(0x8011, R.drawable.shootingmode_portrait);
+//        nikonExposureProgramMap.put(0x8012, R.drawable.shootingmode_landscape);
+//        nikonExposureProgramMap.put(0x8013, R.drawable.shootingmode_close_up);
+//        nikonExposureProgramMap.put(0x8014, R.drawable.shootingmode_sports);
+//        nikonExposureProgramMap.put(0x8015, R.drawable.shootingmode_night_scene_portrait);
+//        nikonExposureProgramMap.put(0x8016, R.drawable.shootingmode_flash_off);
+//        nikonExposureProgramMap.put(0x8017, R.drawable.shootingmode_unknown); // TODO Child
+//        nikonExposureProgramMap.put(0x8018, R.drawable.shootingmode_unknown); // TODO SCENE
+//        nikonExposureProgramMap.put(0x8050, R.drawable.shootingmode_unknown); // TODO User mode U1
+//        nikonExposureProgramMap.put(0x8051, R.drawable.shootingmode_unknown); // TODO User mode U2
 
         nikonWbColorTempD300SMap.put(0, "2500K");
         nikonWbColorTempD300SMap.put(1, "2560K");
@@ -771,24 +771,24 @@ public class PtpPropertyHelper {
         nikonActivePicCtrlItemMap.put(208, "C-8");
         nikonActivePicCtrlItemMap.put(209, "C-9");
 
-        nikonMeteringModeMap.put(2, R.drawable.metering_exposure_center_weighted_nikon);
-        nikonMeteringModeMap.put(3, R.drawable.metering_exposure_matrix_nikon);
-        nikonMeteringModeMap.put(4, R.drawable.metering_exposure_spot);
-
-        eosMeteringModeIconsMap.put(1, R.drawable.metering_exposure_spot);
-        eosMeteringModeIconsMap.put(3, R.drawable.metering_exposure_evaluative_canon);
-        eosMeteringModeIconsMap.put(4, R.drawable.metering_exposure_partial);
-        eosMeteringModeIconsMap.put(5, R.drawable.metering_exposure_center_weighted_average_canon);
+//        nikonMeteringModeMap.put(2, R.drawable.metering_exposure_center_weighted_nikon);
+//        nikonMeteringModeMap.put(3, R.drawable.metering_exposure_matrix_nikon);
+//        nikonMeteringModeMap.put(4, R.drawable.metering_exposure_spot);
+//
+//        eosMeteringModeIconsMap.put(1, R.drawable.metering_exposure_spot);
+//        eosMeteringModeIconsMap.put(3, R.drawable.metering_exposure_evaluative_canon);
+//        eosMeteringModeIconsMap.put(4, R.drawable.metering_exposure_partial);
+//        eosMeteringModeIconsMap.put(5, R.drawable.metering_exposure_center_weighted_average_canon);
 
         nikonFocusMeteringModeMap.put(0x0002, "Dynamic");
         nikonFocusMeteringModeMap.put(0x8010, "Single point");
         nikonFocusMeteringModeMap.put(0x8011, "Auto area");
         nikonFocusMeteringModeMap.put(0x8012, "3D");
-
-        nikonFocusMeteringModeIconsMap.put(0x0002, R.drawable.metering_af_dynamic_area);
-        nikonFocusMeteringModeIconsMap.put(0x8010, R.drawable.metering_af_single_point);
-        nikonFocusMeteringModeIconsMap.put(0x8011, R.drawable.metering_af_auto_area);
-        nikonFocusMeteringModeIconsMap.put(0x8012, R.drawable.metering_af_3d_tracking);
+//
+//        nikonFocusMeteringModeIconsMap.put(0x0002, R.drawable.metering_af_dynamic_area);
+//        nikonFocusMeteringModeIconsMap.put(0x8010, R.drawable.metering_af_single_point);
+//        nikonFocusMeteringModeIconsMap.put(0x8011, R.drawable.metering_af_auto_area);
+//        nikonFocusMeteringModeIconsMap.put(0x8012, R.drawable.metering_af_3d_tracking);
 
         eosPictureStyleMap.put(0x81, "ST");
         eosPictureStyleMap.put(0x82, "PT");

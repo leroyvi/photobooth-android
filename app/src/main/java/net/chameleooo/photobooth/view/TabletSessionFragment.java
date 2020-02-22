@@ -15,51 +15,59 @@
  */
 package net.chameleooo.photobooth.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import net.chameleooo.photobooth.MainActivity;
+import net.chameleooo.photobooth.Picture;
+import net.chameleooo.photobooth.PictureView;
 import net.chameleooo.photobooth.R;
 import net.chameleooo.photobooth.ptp.Camera;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
+import net.chameleooo.photobooth.ptp.model.ObjectInfo;
 
-public class TabletSessionFragment extends SessionFragment {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+
+public class TabletSessionFragment extends SessionFragment implements Camera.RetrieveImageInfoListener {
 
     private final Handler handler = new Handler();
 
-    private LayoutInflater inflater;
-
-    private ToggleButton liveViewToggle;
-
-    private Button takePictureBtn;
     private PictureView liveView;
-
 
     private LiveViewData currentLiveViewData;
     private LiveViewData currentLiveViewData2;
-    private Toast focusToast;
-
-    private Bitmap currentCapturedBitmap;
-    private SharedPreferences prefs;
 
     private boolean showsCapturedPicture;
 
-    private Button btnLiveview;
-
-    private Runnable liveViewRestarterRunner;
-
     private boolean justCaptured;
+
+    private boolean fourPicturesMode = false;
+    private List<Picture> pictures = new ArrayList<>();
 
     private final Runnable justCapturedResetRunner = new Runnable() {
         @Override
@@ -68,39 +76,112 @@ public class TabletSessionFragment extends SessionFragment {
         }
     };
 
+    private View layoutView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.live, container, false);
+        layoutView = inflater.inflate(R.layout.session_frag, container, false);
 
-        this.inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        liveView = (PictureView) layoutView.findViewById(R.id.liveView);
+        FrameLayout fullscreenContent = (FrameLayout) layoutView.findViewById(R.id.fullscreen_content);
 
-//        takePictureBtn = (Button) view.findViewById(R.id.takePictureBtn);
-        liveView = (PictureView) view.findViewById(R.id.liveView);
-//        liveViewToggle = (ToggleButton) view.findViewById(R.id.liveViewToggle);
-//        btnLiveview = (Button) view.findViewById(R.id.btn_liveview);
-
-        btnLiveview.setOnClickListener(new OnClickListener() {
+        fullscreenContent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLiveview.setVisibility(View.GONE);
-                startLiveViewAgain();
+                startLive(v.getRootView());
             }
         });
 
-        prefs = getActivity().getSharedPreferences("settings.xml", Context.MODE_PRIVATE);
+        ((SessionActivity) getActivity()).setSessionView(this);
 
-        takePictureBtn.setOnClickListener(new OnClickListener() {
+        final View onePictButton = layoutView.findViewById(R.id.fab_one_pict);
+        final View fourPictButton = layoutView.findViewById(R.id.fab_four_pict);
+
+        if (fourPicturesMode) {
+            onePictButton.setVisibility(View.GONE);
+            fourPictButton.setVisibility(View.VISIBLE);
+        } else {
+            onePictButton.setVisibility(View.VISIBLE);
+            fourPictButton.setVisibility(View.GONE);
+        }
+
+        onePictButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTakePictureClicked(v);
+                onePictButton.setVisibility(View.GONE);
+                fourPictButton.setVisibility(View.VISIBLE);
+                fourPicturesMode = true;
             }
         });
 
-        enableUi(false);
+        fourPictButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onePictButton.setVisibility(View.VISIBLE);
+                fourPictButton.setVisibility(View.GONE);
+                fourPicturesMode = false;
+            }
+        });
 
-        ((MainActivity) getActivity()).setSessionView(this);
+        return layoutView;
+    }
 
-        return view;
+    public void startLive(View view) {
+        startLiveview(view);
+    }
+
+    private void startLiveview(final View view) {
+        View liveViewLayout = view.findViewById(R.id.liveViewLayout);
+        liveViewLayout.setVisibility(FrameLayout.VISIBLE);
+        View startLayout = view.findViewById(R.id.startLayout);
+        startLayout.setVisibility(FrameLayout.GONE);
+        camera().setLiveView(true);
+        countdown(view);
+    }
+
+    private void countdown(final View view) {
+        new CountDownTimer(6000, 500) {
+            int count = 12;
+            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+            TextView progressText = (TextView) view.findViewById(R.id.progress_text);
+            TextView smileText = (TextView) view.findViewById(R.id.smile_text);
+
+            public void onTick(final long millisUntilFinished) {
+                if (count % 4 == 0) {
+                    progressText.setText(String.valueOf(count / 4));
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressText.setVisibility(View.VISIBLE);
+                    ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 100); // see this max value coming back here, we animale towards that value
+                    animation.setDuration(2000); //in milliseconds
+                    animation.setInterpolator(new DecelerateInterpolator());
+                    animation.start();
+                }
+                count--;
+            }
+
+            public void onFinish() {
+                progressBar.setVisibility(View.GONE);
+                progressText.setVisibility(View.GONE);
+                smileText.setVisibility(View.VISIBLE);
+                takePicture();
+                if (fourPicturesMode) {
+                    takePicture();
+                    takePicture();
+                    takePicture();
+                }
+            }
+        }.start();
+    }
+
+    private void restart(View view) {
+        View liveViewLayout = view.findViewById(R.id.liveViewLayout);
+        liveViewLayout.setVisibility(FrameLayout.GONE);
+        View startLayout = view.findViewById(R.id.startLayout);
+        startLayout.setVisibility(FrameLayout.VISIBLE);
+        liveViewLayout.setVisibility(FrameLayout.GONE);
+        TextView smileText = (TextView) view.findViewById(R.id.smile_text);
+        smileText.setVisibility(View.GONE);
+        camera().setLiveView(false);
     }
 
     @Override
@@ -117,7 +198,6 @@ public class TabletSessionFragment extends SessionFragment {
         super.onResume();
         if (camera() != null) {
             if (camera().isLiveViewOpen()) {
-                // TODO possible that more than one calls this
                 currentLiveViewData = null;
                 currentLiveViewData2 = null;
                 camera().getLiveViewPicture(null);
@@ -128,31 +208,24 @@ public class TabletSessionFragment extends SessionFragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (camera() != null) {
+            camera().setLiveView(false);
+        }
     }
 
     @Override
     public void enableUi(boolean enabled) {
-//        takePictureBtn.setEnabled(enabled);
     }
 
     @Override
     public void cameraStarted(Camera camera) {
-        enableUi(true);
-
-        propertyChanged(Camera.Property.BatteryLevel, camera.getProperty(Camera.Property.BatteryLevel));
-        propertyChanged(Camera.Property.FocusMode, camera.getProperty(Camera.Property.FocusMode));
-        propertyChanged(Camera.Property.AvailableShots, camera.getProperty(Camera.Property.AvailableShots));
-        propertyChanged(Camera.Property.CurrentFocusPoint, camera.getProperty(Camera.Property.CurrentFocusPoint));
-
         if (camera.isLiveViewOpen()) {
             liveViewStarted();
         }
     }
 
-
     @Override
     public void cameraStopped(Camera camera) {
-        enableUi(false);
     }
 
     @Override
@@ -160,41 +233,32 @@ public class TabletSessionFragment extends SessionFragment {
         if (!inStart || camera() == null) {
             return;
         }
-        Integer icon = camera().propertyToIcon(property, value);
+        if (property == Camera.Property.CurrentFocusPoint) {
+            liveView.setCurrentFocusPoint(value);
+        }
     }
 
     @Override
     public void propertyDescChanged(int property, int[] values) {
-        if (!inStart || camera() == null) {
-            return;
-        }
     }
 
     @Override
     public void setCaptureBtnText(String text) {
-        takePictureBtn.setText(text);
     }
 
     @Override
     public void focusStarted() {
-        focusToast.cancel();
-        takePictureBtn.setEnabled(false);
     }
 
     @Override
     public void focusEnded(boolean hasFocused) {
-        if (hasFocused) {
-            focusToast.show();
-        }
-        takePictureBtn.setEnabled(true);
     }
 
     @Override
     public void liveViewStarted() {
-        if (camera() == null) {
+        if (!inStart || camera() == null) {
             return;
         }
-        liveViewToggle.setChecked(true);
         liveView.setLiveViewData(null);
         showsCapturedPicture = false;
         currentLiveViewData = null;
@@ -204,10 +268,6 @@ public class TabletSessionFragment extends SessionFragment {
 
     @Override
     public void liveViewStopped() {
-        if (!inStart || camera() == null) {
-            return;
-        }
-        liveViewToggle.setChecked(false);
     }
 
     @Override
@@ -215,7 +275,7 @@ public class TabletSessionFragment extends SessionFragment {
         if (!inStart || camera() == null) {
             return;
         }
-        if (justCaptured || showsCapturedPicture || !liveViewToggle.isChecked()) {
+        if (justCaptured || showsCapturedPicture) {
             return;
         }
         if (data == null) {
@@ -229,42 +289,80 @@ public class TabletSessionFragment extends SessionFragment {
         camera().getLiveViewPicture(currentLiveViewData2);
     }
 
-    private void startLiveViewAgain() {
-        showsCapturedPicture = false;
-        if (currentCapturedBitmap != null) {
-            liveView.setPicture(null);
-            currentCapturedBitmap.recycle();
-            currentCapturedBitmap = null;
-        }
-        if (camera() != null && camera().isLiveViewOpen()) {
-            liveView.setLiveViewData(null);
-            currentLiveViewData = null;
-            currentLiveViewData2 = null;
-            camera().getLiveViewPicture(currentLiveViewData2);
-        }
-    }
-
     @Override
-    public void capturedPictureReceived(int objectHandle, String filename, Bitmap thumbnail, Bitmap bitmap) {
+    public void capturedPictureReceived(int objectHandle, final String filename, final Bitmap thumbnail, final Bitmap bitmap) {
         if (!inStart) {
             bitmap.recycle();
             return;
         }
-        showsCapturedPicture = true;
-        if (liveViewToggle.isChecked()) {
-            btnLiveview.setVisibility(View.VISIBLE);
-        }
-        liveView.setPicture(bitmap);
-        Toast.makeText(getActivity(), filename, Toast.LENGTH_SHORT).show();
-        if (currentCapturedBitmap != null) {
-            currentCapturedBitmap.recycle();
-        }
-        currentCapturedBitmap = bitmap;
-        if (bitmap == null) {
-            Toast.makeText(getActivity(), "Error decoding picture. Try to reduce picture size in settings!",
-                    Toast.LENGTH_LONG).show();
+
+        Picture picture = new Picture(filename, bitmap);
+
+        if (fourPicturesMode && pictures.size() < 4) {
+            pictures.add(picture);
+            if (pictures.size() == 4) {
+                Bitmap result = combineImages(pictures.get(0).getBitmap(),
+                        pictures.get(1).getBitmap(),
+                        pictures.get(2).getBitmap(),
+                        pictures.get(3).getBitmap());
+                pictures.clear();
+                picture = null;
+                Bitmap resized = resize(result, 3696, 2448);
+                final File bitmapFile = savePicture(new Picture(filename, resized));
+                askForAction(bitmapFile);
+                restart(liveView.getRootView());
+            }
+        } else {
+            final File bitmapFile = savePicture(picture);
+            askForAction(bitmapFile);
+            restart(liveView.getRootView());
         }
     }
+
+    @NonNull
+    private File savePicture(Picture picture) {
+        final File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        final File bitmapFile = new File(directory, picture.getFilename());
+        try {
+            picture.getBitmap().compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(bitmapFile));
+            File thumbnailFile = new File(directory, picture.getFilename().replaceAll("\\.JPG", "\\.thumb\\.JPG"));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4;
+            Bitmap thumbBitmap = BitmapFactory.decodeFile(bitmapFile.getPath(), new BitmapFactory.Options());
+            thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 50, new FileOutputStream(thumbnailFile));
+        } catch (FileNotFoundException e) {
+            Log.e("CAPUTRING", "Error saving thumbnail file", e);
+        }
+        return bitmapFile;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+
+                case 1:
+                    final Uri mImageUri = data.getData();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 4;
+                    Bitmap thumbBitmap = BitmapFactory.decodeFile(mImageUri.getPath(), new BitmapFactory.Options());
+                    try {
+                        thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 50, new FileOutputStream(mImageUri.getPath().replaceAll("\\.JPG", "\\.thumb.JPG")));
+                    } catch (FileNotFoundException e) {
+                        Log.e("", "Cannot save thumbnail", e);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void askForAction(final File bitmapFile) {
+        PhotoResultDialogFragment.newInstance(bitmapFile.getAbsolutePath()).show(getActivity().getFragmentManager(), null);
+    }
+
 
     @Override
     public void objectAdded(int handle, int format) {
@@ -272,23 +370,56 @@ public class TabletSessionFragment extends SessionFragment {
             return;
         }
         if (format == PtpConstants.ObjectFormat.EXIF_JPEG) {
-            if (liveViewToggle.isChecked()) {
-                handler.post(liveViewRestarterRunner);
-            } else {
-                camera().retrievePicture(handle);
-            }
+            camera().retrievePicture(handle);
         }
     }
 
-    public void onFocusClicked(View view) {
-        camera().focus();
-    }
-
-    public void onTakePictureClicked(View view) {
-        // TODO necessary
-        //liveView.setLiveViewData(null);
+    public void takePicture() {
         camera().capture();
         justCaptured = true;
         handler.postDelayed(justCapturedResetRunner, 500);
+    }
+
+    @Override
+    public void onImageInfoRetrieved(final int objectHandle, final ObjectInfo objectInfo, final Bitmap thumbnail) {
+    }
+
+    public Bitmap combineImages(Bitmap first, Bitmap seconde, Bitmap third, Bitmap fourth) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width = first.getWidth() + 20 + seconde.getWidth();
+        int height = first.getHeight() + 20 + third.getHeight();
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+        comboImage.drawColor(Color.WHITE);
+        comboImage.drawBitmap(first, 0f, 0f, null);
+        comboImage.drawBitmap(seconde, first.getWidth() + 20, 0f, null);
+        comboImage.drawBitmap(third, 0f, first.getHeight() + 20, null);
+        comboImage.drawBitmap(fourth, first.getWidth() + 20, first.getHeight() + 20, null);
+
+        return cs;
+    }
+
+    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > 1) {
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
     }
 }

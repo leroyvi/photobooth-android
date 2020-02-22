@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2013 Nils Assbeck, Guersel Ayaz and Michael Zoech
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:id="@+id/liveViewLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
+
+        <net.chameleooo.photobooth.PictureView
+            android:id="@+id/liveView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="450dp"
+        android:layout_height="450dp"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal"
+        android:progressDrawable="@drawable/circular" />
+
+    <TextView
+        android:id="@+id/progress_text"
+        android:layout_width="600dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#2F4F4F"
+        android:textSize="300sp" />
+
+    <TextView
+        android:id="@+id/smile_text"
+        android:layout_width="900dp"
+        android:layout_height="450dp"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#2F4F4F"
+        android:textSize="300sp"
+        android:text="@string/smile"
+        android:visibility="gone"/>
+</FrameLayout>

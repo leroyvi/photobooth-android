@@ -18,7 +18,7 @@ package net.chameleooo.photobooth.ptp.model;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.PacketUtil;
-import net.chameleooo.photobooth.ptp.PtpConstants.Datatype;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class DevicePropDesc {
 
@@ -41,7 +41,7 @@ public class DevicePropDesc {
         datatype = b.getShort() & 0xFFFF;
         readOnly = b.get() == 0;
 
-        if (datatype == Datatype.int8 || datatype == Datatype.uint8) {
+        if (datatype == PtpConstants.Datatype.int8 || datatype == PtpConstants.Datatype.uint8) {
             factoryDefault = b.get() & 0xFF;
             currentValue = b.get() & 0xFF;
             int form = b.get();
@@ -56,7 +56,7 @@ public class DevicePropDesc {
                     description[i] = mini + step * i;
                 }
             }
-        } else if (datatype == Datatype.uint16) {
+        } else if (datatype == PtpConstants.Datatype.uint16) {
             factoryDefault = b.getShort() & 0xFFFF;
             currentValue = b.getShort() & 0xFFFF;
             int form = b.get();
@@ -71,7 +71,7 @@ public class DevicePropDesc {
                     description[i] = mini + step * i;
                 }
             }
-        } else if (datatype == Datatype.int16) {
+        } else if (datatype == PtpConstants.Datatype.int16) {
             factoryDefault = b.getShort();
             currentValue = b.getShort();
             int form = b.get();
@@ -86,7 +86,7 @@ public class DevicePropDesc {
                     description[i] = mini + step * i;
                 }
             }
-        } else if (datatype == Datatype.int32 || datatype == Datatype.uint32) {
+        } else if (datatype == PtpConstants.Datatype.int32 || datatype == PtpConstants.Datatype.uint32) {
             factoryDefault = b.getInt();
             currentValue = b.getInt();
             int form = b.get();

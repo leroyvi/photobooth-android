@@ -1,12 +1,12 @@
 /**
  * Copyright 2013 Nils Assbeck, Guersel Ayaz and Michael Zoech
- * <p/>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,7 @@
  */
 package net.chameleooo.photobooth.view;
 
-import net.chameleooo.photobooth.MainActivity;
+import net.chameleooo.photobooth.AppSettings;
 import net.chameleooo.photobooth.ptp.Camera;
 
 public abstract class SessionFragment extends BaseFragment implements SessionView {
@@ -26,7 +26,11 @@ public abstract class SessionFragment extends BaseFragment implements SessionVie
         if (getActivity() == null) {
             return null;
         }
-        return ((MainActivity) getActivity()).getCamera();
+        return ((SessionActivity) getActivity()).getCamera();
+    }
+
+    protected AppSettings getSettings() {
+        return ((SessionActivity) getActivity()).getSettings();
     }
 
     @Override

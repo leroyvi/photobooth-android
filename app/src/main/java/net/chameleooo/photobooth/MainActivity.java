@@ -1,12 +1,12 @@
 /**
  * Copyright 2013 Nils Assbeck, Guersel Ayaz and Michael Zoech
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,42 +15,57 @@
  */
 package net.chameleooo.photobooth;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import net.chameleooo.photobooth.activities.AppSettingsActivity;
 import net.chameleooo.photobooth.ptp.Camera;
-import net.chameleooo.photobooth.ptp.Camera.CameraListener;
 import net.chameleooo.photobooth.ptp.PtpService;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
+import net.chameleooo.photobooth.view.GalleryFragment;
+import net.chameleooo.photobooth.view.SessionActivity;
 import net.chameleooo.photobooth.view.SessionView;
 import net.chameleooo.photobooth.view.TabletSessionFragment;
 
-public class MainActivity extends Activity implements CameraListener {
+public class MainActivity extends SessionActivity implements Camera.CameraListener {
 
     private static final int DIALOG_PROGRESS = 1;
     private static final int DIALOG_NO_CAMERA = 2;
-
     private final String TAG = MainActivity.class.getSimpleName();
-
-    private final Handler handler = new Handler();
-
     private PtpService ptp;
     private Camera camera;
-
     private boolean isInStart;
     private boolean isInResume;
     private SessionView sessionFrag;
+    private AppSettings settings;
 
+    @Override
     public Camera getCamera() {
         return camera;
+    }
+
+    @Override
+    public void setSessionView(SessionView view) {
+        sessionFrag = view;
+    }
+
+    @Override
+    public AppSettings getSettings() {
+        return settings;
     }
 
     @Override
@@ -60,11 +75,18 @@ public class MainActivity extends Activity implements CameraListener {
             Log.i(TAG, "onCreate");
         }
 
-        setContentView(R.layout.live);
+        setContentView(R.layout.session);
 
+        settings = new AppSettings(this);
+        ActionBar bar = getSupportActionBar();
+
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        bar.setDisplayHomeAsUpEnabled(false);
+        bar.addTab(bar.newTab().setText("Photobooth").setTabListener(new MyTabListener(new TabletSessionFragment())));
+        bar.addTab(bar.newTab().setText("Gallerie").setTabListener(new MyTabListener(new GalleryFragment())));
         ptp = PtpService.Singleton.getInstance(this);
-        sessionFrag = new TabletSessionFragment();
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -77,11 +99,6 @@ public class MainActivity extends Activity implements CameraListener {
             ptp.initialize(this, intent);
         }
     }
-
-    public void setSessionView(SessionView view) {
-        sessionFrag = view;
-    }
-
 
     @Override
     protected void onStart() {
@@ -98,12 +115,14 @@ public class MainActivity extends Activity implements CameraListener {
     protected void onResume() {
         super.onResume();
         isInResume = true;
+        ptp.initialize(this, getIntent());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         isInResume = false;
+        ptp.shutdown();
     }
 
     @Override
@@ -114,9 +133,7 @@ public class MainActivity extends Activity implements CameraListener {
         }
         isInStart = false;
         ptp.setCameraListener(null);
-        if (isFinishing()) {
-            ptp.shutdown();
-        }
+        ptp.shutdown();
     }
 
     @Override
@@ -125,8 +142,36 @@ public class MainActivity extends Activity implements CameraListener {
         if (AppConfig.LOG) {
             Log.i(TAG, "onDestroy");
         }
+        ptp.shutdown();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DIALOG_PROGRESS:
+                return ProgressDialog.show(this, "", "Generating information. Please wait...", true);
+            case DIALOG_NO_CAMERA:
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                b.setTitle(R.string.dialog_no_camera_title);
+                b.setMessage(R.string.dialog_no_camera_message);
+                b.setNeutralButton(R.string.ok, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                return b.create();
+        }
+        return super.onCreateDialog(id);
+    }
+
+    public void onMenuSettingsClicked(MenuItem item) {
+        startActivity(new Intent(this, AppSettingsActivity.class));
+    }
 
     @Override
     public void onCameraStarted(Camera camera) {
@@ -138,10 +183,8 @@ public class MainActivity extends Activity implements CameraListener {
             dismissDialog(DIALOG_NO_CAMERA);
         } catch (IllegalArgumentException e) {
         }
-        camera.setCapturedPictureSampleSize(2);
+        camera.setCapturedPictureSampleSize(settings.getCapturedPictureSampleSize());
         sessionFrag.cameraStarted(camera);
-        camera.setLiveView(true);
-        sessionFrag.liveViewStarted();
     }
 
     @Override
@@ -153,6 +196,7 @@ public class MainActivity extends Activity implements CameraListener {
                 ~WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         this.camera = null;
         sessionFrag.cameraStopped(camera);
+        ptp.shutdown();
     }
 
     @Override
@@ -165,6 +209,7 @@ public class MainActivity extends Activity implements CameraListener {
         sessionFrag.enableUi(false);
         sessionFrag.cameraStopped(null);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        ptp.shutdown();
     }
 
     @Override
@@ -174,7 +219,6 @@ public class MainActivity extends Activity implements CameraListener {
 
     @Override
     public void onPropertyStateChanged(int property, boolean enabled) {
-        // TODO
     }
 
     @Override
@@ -236,11 +280,35 @@ public class MainActivity extends Activity implements CameraListener {
 
     @Override
     public void onFocusPointsChanged() {
-        // TODO onFocusPointsToggleClicked(null);
     }
 
     @Override
     public void onObjectAdded(int handle, int format) {
         sessionFrag.objectAdded(handle, format);
+    }
+
+    private static class MyTabListener implements ActionBar.TabListener {
+
+        private final Fragment fragment;
+
+        public MyTabListener(Fragment fragment) {
+            this.fragment = fragment;
+        }
+
+
+        @Override
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            ft.add(R.id.fragment_container, fragment);
+        }
+
+        @Override
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            ft.remove(fragment);
+        }
+
+        @Override
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        }
+
     }
 }

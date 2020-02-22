@@ -17,12 +17,12 @@ package net.chameleooo.photobooth.ptp.commands;
 
 import java.nio.ByteBuffer;
 
-import net.chameleooo.photobooth.ptp.Camera.StorageInfoListener;
 import net.chameleooo.photobooth.ptp.PacketUtil;
 import net.chameleooo.photobooth.ptp.PtpCamera;
 import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.Camera;
 
 public class GetObjectHandlesCommand extends Command {
 
@@ -30,7 +30,7 @@ public class GetObjectHandlesCommand extends Command {
     private final int objectFormat;
     private final int associationHandle;
     private int[] objectHandles;
-    private final StorageInfoListener listener;
+    private final Camera.StorageInfoListener listener;
 
     public int[] getObjectHandles() {
         if (objectHandles == null) {
@@ -39,16 +39,16 @@ public class GetObjectHandlesCommand extends Command {
         return objectHandles;
     }
 
-    public GetObjectHandlesCommand(PtpCamera camera, StorageInfoListener listener, int storageId) {
+    public GetObjectHandlesCommand(PtpCamera camera, Camera.StorageInfoListener listener, int storageId) {
         this(camera, listener, storageId, 0, 0);
     }
 
-    public GetObjectHandlesCommand(PtpCamera camera, StorageInfoListener listener, int storageId, int objectFormat) {
+    public GetObjectHandlesCommand(PtpCamera camera, Camera.StorageInfoListener listener, int storageId, int objectFormat) {
         this(camera, listener, storageId, objectFormat, 0);
     }
 
-    public GetObjectHandlesCommand(PtpCamera camera, StorageInfoListener listener, int storageId, int objectFormat,
-            int associationHandle) {
+    public GetObjectHandlesCommand(PtpCamera camera, Camera.StorageInfoListener listener, int storageId, int objectFormat,
+                                   int associationHandle) {
         super(camera);
         this.listener = listener;
         this.storageId = storageId;

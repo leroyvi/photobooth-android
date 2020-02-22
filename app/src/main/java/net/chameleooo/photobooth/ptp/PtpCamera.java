@@ -15,10 +15,25 @@
  */
 package net.chameleooo.photobooth.ptp;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 import android.graphics.Bitmap;
 import android.hardware.usb.UsbRequest;
 import android.os.Handler;
 import android.util.Log;
+
+import org.acra.ErrorReporter;
 
 import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.commands.CloseSessionCommand;
@@ -36,19 +51,6 @@ import net.chameleooo.photobooth.ptp.commands.SetDevicePropValueCommand;
 import net.chameleooo.photobooth.ptp.model.DeviceInfo;
 import net.chameleooo.photobooth.ptp.model.DevicePropDesc;
 import net.chameleooo.photobooth.ptp.model.LiveViewData;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public abstract class PtpCamera implements Camera {
 
@@ -187,13 +189,13 @@ public abstract class PtpCamera implements Camera {
         if (AppConfig.LOG) {
             Log.i(TAG, deviceInfo.toString());
         }
-//        if (AppConfig.USE_ACRA) {
-//            try {
-//                ErrorReporter.getInstance().putCustomData("deviceInfo", deviceInfo.toString());
-//            } catch (Throwable e) {
-//                // no fail
-//            }
-//        }
+        if (AppConfig.USE_ACRA) {
+            try {
+                ErrorReporter.getInstance().putCustomData("deviceInfo", deviceInfo.toString());
+            } catch (Throwable e) {
+                // no fail
+            }
+        }
         this.deviceInfo = deviceInfo;
 
         Set<Integer> operations = new HashSet<Integer>();
@@ -524,7 +526,7 @@ public abstract class PtpCamera implements Camera {
             }
 
             if (maxPacketInSize <= 0 || maxPacketInSize > 0xffff) {
-                onUsbError(String.format("usb initialization error: in size invalid %d", maxPacketInSize));
+                onUsbError(String.format("photobooth initialization error: in size invalid %d", maxPacketInSize));
                 return;
             }
 
@@ -786,13 +788,14 @@ public abstract class PtpCamera implements Camera {
 
     @Override
     public Integer propertyToIcon(int property, int value) {
-        Integer ptpProperty = virtualToPtpProperty.get(property);
-        if (ptpProperty != null) {
-            Integer iconId = PtpPropertyHelper.mapToDrawable(ptpProperty, value);
-            return iconId != null ? iconId : null;
-        } else {
+//        Integer ptpProperty = virtualToPtpProperty.get(property);
+//        if (ptpProperty != null) {
+////            Integer iconId = PtpPropertyHelper.mapToDrawable(ptpProperty, value);
+////            return iconId != null ? iconId : null;
+//            return null;
+//        } else {
             return null;
-        }
+//        }
     }
 
     @Override

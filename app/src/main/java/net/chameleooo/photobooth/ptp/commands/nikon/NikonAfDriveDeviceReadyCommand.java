@@ -18,9 +18,8 @@ package net.chameleooo.photobooth.ptp.commands.nikon;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.NikonCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
-import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpCamera;
+import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class NikonAfDriveDeviceReadyCommand extends NikonCommand {
 
@@ -29,18 +28,18 @@ public class NikonAfDriveDeviceReadyCommand extends NikonCommand {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
-        if (getResponseCode() == Response.DeviceBusy) {
+        if (getResponseCode() == PtpConstants.Response.DeviceBusy) {
             reset();
             camera.enqueue(this, 200);
         } else {
-            camera.onFocusEnded(getResponseCode() == Response.Ok);
+            camera.onFocusEnded(getResponseCode() == PtpConstants.Response.Ok);
         }
     }
 
     @Override
     public void encodeCommand(ByteBuffer b) {
-        encodeCommand(b, Operation.NikonDeviceReady);
+        encodeCommand(b, PtpConstants.Operation.NikonDeviceReady);
     }
 }

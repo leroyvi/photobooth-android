@@ -15,14 +15,12 @@
  */
 package net.chameleooo.photobooth.ptp;
 
-import net.chameleooo.photobooth.ptp.Camera.CameraListener;
-
 import android.content.Context;
 import android.content.Intent;
 
 public interface PtpService {
 
-    void setCameraListener(CameraListener listener);
+    void setCameraListener(Camera.CameraListener listener);
 
     void initialize(Context context, Intent intent);
 

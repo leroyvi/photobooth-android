@@ -15,16 +15,13 @@
  */
 package net.chameleooo.photobooth.ptp.commands;
 
-import android.util.Log;
+import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
-import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
-import net.chameleooo.photobooth.ptp.PtpConstants.Response;
 
-import java.nio.ByteBuffer;
+import android.util.Log;
 
 public class CloseSessionCommand extends Command {
 
@@ -35,16 +32,16 @@ public class CloseSessionCommand extends Command {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
         // Can this even happen?
-        if (responseCode == Response.DeviceBusy) {
+        if (responseCode == PtpConstants.Response.DeviceBusy) {
             camera.onDeviceBusy(this, true);
             return;
         }
         // close even when error happened
         camera.onSessionClosed();
-        if (responseCode != Response.Ok) {
+        if (responseCode != PtpConstants.Response.Ok) {
             // TODO error report
             if (AppConfig.LOG) {
                 Log.w(TAG,
@@ -56,6 +53,6 @@ public class CloseSessionCommand extends Command {
 
     @Override
     public void encodeCommand(ByteBuffer b) {
-        encodeCommand(b, Operation.CloseSession);
+        encodeCommand(b, PtpConstants.Operation.CloseSession);
     }
 }

@@ -22,7 +22,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import net.chameleooo.photobooth.ptp.PtpCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 
 public class GetThumb extends Command {
@@ -42,7 +41,7 @@ public class GetThumb extends Command {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         throw new UnsupportedOperationException();
     }
 

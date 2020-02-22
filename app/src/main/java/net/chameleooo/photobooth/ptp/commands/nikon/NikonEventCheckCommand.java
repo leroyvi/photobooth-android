@@ -15,6 +15,8 @@
  */
 package net.chameleooo.photobooth.ptp.commands.nikon;
 
+import java.nio.ByteBuffer;
+
 import android.util.Log;
 
 import net.chameleooo.photobooth.AppConfig;
@@ -23,8 +25,6 @@ import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants;
 import net.chameleooo.photobooth.ptp.PtpConstants.Event;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
-
-import java.nio.ByteBuffer;
 
 public class NikonEventCheckCommand extends NikonCommand {
 

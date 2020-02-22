@@ -1,19 +1,6 @@
-/**
- * Copyright 2013 Nils Assbeck, Guersel Ayaz and Michael Zoech
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package net.chameleooo.photobooth.ptp;
+
+import java.util.Map;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -31,8 +18,6 @@ import android.util.Log;
 import net.chameleooo.photobooth.AppConfig;
 import net.chameleooo.photobooth.ptp.Camera.CameraListener;
 import net.chameleooo.photobooth.ptp.PtpCamera.State;
-
-import java.util.Map;
 
 public class PtpUsbService implements PtpService {
 
@@ -96,11 +81,11 @@ public class PtpUsbService implements PtpService {
                 return;
             }
             if (AppConfig.LOG) {
-                Log.i(TAG, "initialize: camera not active, satet " + camera.getState());
+                Log.i(TAG, "initialize: camera not active, state " + camera.getState());
             }
             camera.shutdownHard();
         }
-        UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
         if (device != null) {
             if (AppConfig.LOG) {
                 Log.i(TAG, "initialize: got device through intent");

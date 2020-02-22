@@ -15,20 +15,21 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-  <LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="fill_parent"
-    android:layout_weight="1"
-    android:orientation="vertical">
-
-    <include
-      android:layout_width="fill_parent"
-      android:layout_height="0dp"
+  <include
+      android:layout_width="0dp"
+      android:layout_height="fill_parent"
       android:layout_weight="1"
-      layout="@layout/live"/>
-  </LinearLayout>
+      layout="@layout/start"/>
+
+  <include
+      android:layout_width="0dp"
+      android:layout_height="fill_parent"
+      android:layout_weight="1"
+      layout="@layout/liveview"
+      />
+
 </LinearLayout>

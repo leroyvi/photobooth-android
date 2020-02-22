@@ -18,9 +18,9 @@ package net.chameleooo.photobooth.ptp.commands.eos;
 import java.nio.ByteBuffer;
 
 import net.chameleooo.photobooth.ptp.EosCamera;
-import net.chameleooo.photobooth.ptp.PtpCamera.IO;
 import net.chameleooo.photobooth.ptp.PtpConstants.Operation;
 import net.chameleooo.photobooth.ptp.PtpConstants.Response;
+import net.chameleooo.photobooth.ptp.PtpCamera;
 
 public class EosTakePictureCommand extends EosCommand {
 
@@ -29,7 +29,7 @@ public class EosTakePictureCommand extends EosCommand {
     }
 
     @Override
-    public void exec(IO io) {
+    public void exec(PtpCamera.IO io) {
         io.handleCommand(this);
         if (responseCode == Response.DeviceBusy) {
             camera.onDeviceBusy(this, true);
